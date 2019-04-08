@@ -6,14 +6,15 @@ import axios from 'axios'
 class Register extends React.Component{
     state = {error : ''}
     onBtnRegister = () => {
-        if(this.refs.username.value || this.refs.password.value || this.refs.email.value || this.refs.phone.value){
+        if(this.refs.username.value || this.refs.password.value || this.refs.email.value){
             var newData = {
                 username : this.refs.username.value,
                 password : this.refs.password.value,
                 email : this.refs.email.value,
-                phone : this.refs.phone.value
             }
-            axios.post()
+            axios.post('http://localhost:5000/auth/register',newData)
+            .then((res) => alert(res.data))
+            .catch((err) => console.log(err))
 
         }else{
             this.setState({error : 'semua form harus diisi'})
@@ -49,13 +50,6 @@ class Register extends React.Component{
                                     <label className="col-sm-3 col-form-label">Email</label>
                                     <div className="col-sm-9">
                                     <input type="email" ref="email" className="form-control" id="inputEmail" placeholder="Email@mail.com" required />
-                                    </div>
-                                </div>
-
-                                <div className="form-group row">
-                                    <label className="col-sm-3 col-form-label">Phone</label>
-                                    <div className="col-sm-9">
-                                    <input type="phone" ref="phone" className="form-control" id="inputPhone" placeholder="Ex: 0857xxxxxxxx" required />
                                     </div>
                                 </div>
                                 

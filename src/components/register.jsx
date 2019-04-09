@@ -6,14 +6,26 @@ import axios from 'axios'
 class Register extends React.Component{
     state = {error : ''}
     onBtnRegister = () => {
-        if(this.refs.username.value || this.refs.password.value || this.refs.email.value){
+        if(this.refs.username.value && this.refs.password.value && this.refs.email.value){
             var newData = {
                 username : this.refs.username.value,
                 password : this.refs.password.value,
                 email : this.refs.email.value,
             }
+            alert('masuk')
             axios.post('http://localhost:5000/auth/register',newData)
-            .then((res) => alert(res.data))
+            .then((res) => 
+                {
+                    if(res.data.error)
+                    {
+                        this.setState({error : res.data.msg })
+                    }
+                    else
+                    {
+                        alert(res.data)
+                    }
+                }   
+            )
             .catch((err) => console.log(err))
 
         }else{

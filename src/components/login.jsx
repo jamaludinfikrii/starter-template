@@ -1,8 +1,33 @@
 import React from 'react'
-import { Link} from 'react-router-dom'
+import { Link , Redirect} from 'react-router-dom'
+import Axios from 'axios';
+import {connect} from 'react-redux'
+import { LoginAction } from './../2.actions/authAction'
+
 
 class Login extends React.Component{
+    onBtnLoginClick = () => {
+    
+        // var username = this.refs.username.value
+        // var password = this.refs.password.value
+        // var obj = {
+        //     username,password
+        // }
+        Axios.post('http://localhost:5000/auth/login', {
+            username : this.refs.username.value,
+            password : this.refs.password.value
+        })
+        .then((res) => {
+            this.props.LoginAction(res.data[0].username)
+        })
+        .catch((err) => console.log(err))
+    }
     render(){
+        if(this.props.username){
+            return(
+                <Redirect to='/' />
+            ) 
+        }
         return(
             <div className="container myBody" style={{minHeight:"600px"}}>
                 <div className="row justify-content-sm-center ml-auto mr-auto mt-3" >
@@ -39,4 +64,10 @@ class Login extends React.Component{
         )
     }
 }
-export default Login
+
+const mapStateToProps = (state) => {
+    return{
+        username : state.auth.username
+    }
+}
+export default connect(mapStateToProps,{LoginAction})(Login)
